@@ -5,8 +5,10 @@ import {
     existsSync,
     lstatSync,
     mkdirSync,
+    readFileSync,
     readdirSync,
     rmSync,
+    writeFileSync,
 } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
@@ -63,6 +65,22 @@ async function ensureEngine(engine?: string): Promise<Engine> {
     }
 
     return selection as Engine;
+}
+async function ensureName(name?: string): Promise<string> {
+    if (name && name.trim().length > 0) {
+        return name;
+    }
+
+    const enteredName = await text({
+        message: 'Enter a project name:',
+        placeholder: 'my-project',
+    });
+
+    if (!enteredName || typeof enteredName !== 'string') {
+        process.exit(1);
+    }
+
+    return enteredName;
 }
 
 async function ensureTargetDir(target?: string): Promise<string> {
@@ -147,7 +165,25 @@ async function handleTargetDirectory(targetPath: string) {
     }
 }
 
+async function handleSuccessfulCopy(path: string, name: string) {
+    if (!existsSync(join(path, 'package.json'))) {
+        console.log('nope');
+    } else {
+        const packageJson = JSON.parse(
+            readFileSync(join(path, 'package.json'), 'utf-8'),
+        );
+
+        packageJson.name = name;
+
+        writeFileSync(
+            join(path, 'package.json'),
+            JSON.stringify(packageJson, null, 2),
+        );
+    }
+}
+
 async function main() {
+    const name = await ensureName(args.values.name);
     const engine = await ensureEngine(args.values.engine);
     const targetDir = await ensureTargetDir(args.values.target);
     const templatePath = resolve(import.meta.dirname, '../templates', engine);
@@ -161,6 +197,7 @@ async function main() {
     await handleTargetDirectory(targetPath);
 
     copyRecursive(templatePath, targetPath);
+    handleSuccessfulCopy(targetPath, name);
     console.log(`✅ Template "${engine}" copied to "${targetPath}"`);
 }
 
