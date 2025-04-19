@@ -2,6 +2,9 @@
   "name": "create-quick-script",
   "version": "1.0.0",
   "type": "module",
+  "repository": {
+    "url": "git@github.com:todor-a/quick-script.git"
+  },
   "bin": {
     "create-quick-script": "./dist/index.js"
   },
