@@ -1,6 +1,12 @@
 {
-  "tasks": {
-    "format": "deno fmt",
-    "start": "deno run --allow-read --allow-env --allow-net --allow-write main.ts --dry=true"
-  }
+    "tasks": {
+        "format": "deno fmt",
+        "start": "deno run --allow-read --allow-env --allow-net --allow-write main.ts --dry=true"
+    },
+    "fmt": {
+        "singleQuote": true,
+        "useTabs": false,
+        "indentWidth": 4,
+        "semiColons": true
+    }
 }
