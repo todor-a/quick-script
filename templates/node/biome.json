@@ -11,15 +11,15 @@
     },
     "formatter": {
         "enabled": true,
-        "indentStyle": "tab"
+        "indentWidth": 4,
+        "indentStyle": "space"
     },
     "organizeImports": {
         "enabled": true
     },
     "json": {
         "formatter": {
-            "indentStyle": "space",
-            "indentWidth": 4
+            "enabled": true
         }
     },
     "linter": {
@@ -30,7 +30,7 @@
     },
     "javascript": {
         "formatter": {
-            "quoteStyle": "double"
+            "quoteStyle": "single"
         }
     }
 }

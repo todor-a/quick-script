@@ -18,15 +18,11 @@
     "organizeImports": {
         "enabled": true
     },
-    "json": {
-        "formatter": {
-            "indentStyle": "space",
-            "indentWidth": 4
-        }
-    },
     "linter": {
         "enabled": true,
-        "rules": { "recommended": true }
+        "rules": {
+            "recommended": true
+        }
     },
     "javascript": {
         "formatter": {
