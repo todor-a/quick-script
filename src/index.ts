@@ -110,7 +110,7 @@ async function handleTargetDirectory(targetPath: string) {
 async function main() {
   const engine = await ensureEngine(args.values.engine);
   const targetDir = await ensureTargetDir(args.values.target);
-  const templatePath = resolve(__dirname, '../templates', engine);
+  const templatePath = resolve(import.meta.dirname, '../templates', engine);
   const targetPath = resolve(process.cwd(), targetDir);
 
   if (!existsSync(templatePath)) {
