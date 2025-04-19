@@ -2,6 +2,11 @@ import { randomInt } from "crypto";
 import fs from "fs";
 import { parseArgs, styleText } from "node:util";
 
+interface User {
+	id: string;
+	email: string;
+}
+
 const args = parseArgs({
 	options: {
 		url: {
@@ -14,7 +19,7 @@ const args = parseArgs({
 	},
 });
 
-const user = await fetch(`https://dummyjson.com/users/${randomInt(100)}`).then(data => data.json());
+const user = await fetch(`https://dummyjson.com/users/${randomInt(100)}`).then(data => data.json()) as User;
 
 const data = {
 	user: {
