@@ -1,21 +1,22 @@
 {
-	"name": "__name__",
-	"version": "1.0.0",
-	"main": "index.js",
-	"type": "module",
-	"scripts": {
-		"start": "node --env-file=.env --experimental-transform-types --experimental-strip-types index.ts"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
-	"description": "",
-	"devDependencies": {
-		"@biomejs/biome": "^1.9.4",
-		"@types/node": "^22.14.1",
-		"typescript": "^5.8.3"
-	},
-	"engines": {
-		"node": ">=22"
-	}
+    "name": "__name__",
+    "version": "1.0.0",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "format": "npx @biomejs/biome format --write",
+        "start": "node --env-file=.env --experimental-transform-types --experimental-strip-types index.ts"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "devDependencies": {
+        "@biomejs/biome": "^1.9.4",
+        "@types/node": "^22.14.1",
+        "typescript": "^5.8.3"
+    },
+    "engines": {
+        "node": ">=22"
+    }
 }
