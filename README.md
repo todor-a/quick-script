@@ -3,8 +3,14 @@
 Ever wanted to quickly prototype an idea, but got stuck messing with tooling, dependencies, formatting, and everything else, only to forget what you set out to build in the first place? Well, I have.
 
 `quick-script` is a simple utility for bootstrapping a script fast.
-It includes a minimal starter with things I always have to look up - like reading a file or parsing CLI args.
+It includes a minimal starter with things I always have to look up:
+- reading a file
+- parsing CLI args
+- printing colored text
+
 Plus, it comes pre-configured with a formatter and format-on-save.
+
+Besides all that, all templates come with minimal dependencies and try to leverage native APIs instead.
 
 # Usage
 
