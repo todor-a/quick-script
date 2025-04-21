@@ -6,6 +6,7 @@ Ever wanted to quickly prototype an idea, but got stuck messing with tooling, de
 It includes a minimal starter with things I always have to look up:
 - reading a file
 - parsing CLI args
+- configuring TypeScript
 - printing colored text
 
 Plus, it comes pre-configured with a formatter and format-on-save.
