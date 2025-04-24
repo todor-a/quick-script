@@ -4,6 +4,7 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
+        "build": "tsc",
         "format": "npx @biomejs/biome format --write",
         "start": "node --env-file=.env --experimental-transform-types --experimental-strip-types index.ts"
     },
