@@ -12,7 +12,7 @@ import {
 } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
-import { isCancel, select, text } from '@clack/prompts';
+import { isCancel, select, text , log} from '@clack/prompts';
 import { kebabCase } from 'es-toolkit';
 
 const engines = ['deno', 'node', 'bun'] as const;
@@ -34,6 +34,10 @@ const args = parseArgs({
         },
         force: {
             type: 'boolean',
+        },
+        git: {
+            type: 'boolean',
+            default: true,
         },
     },
 });
@@ -92,7 +96,7 @@ async function ensureTargetDir(name: string, target?: string): Promise<string> {
     const response = await text({
         message: 'Where should the template be copied?',
         placeholder: defaultName,
-        defaultValue: defaultName
+        defaultValue: defaultName,
     });
 
     if (!response || isCancel(response)) {
@@ -169,7 +173,7 @@ async function handleTargetDirectory(targetPath: string) {
     }
 }
 
-async function handleSuccessfulCopy(path: string, name: string) {
+async function updateProjectName(path: string, name: string) {
     if (!existsSync(join(path, 'package.json'))) {
         console.log('nope');
     } else {
@@ -201,8 +205,13 @@ async function main() {
     await handleTargetDirectory(targetPath);
 
     copyRecursive(templatePath, targetPath);
-    handleSuccessfulCopy(targetPath, name);
-    console.log(`✅ Template "${engine}" copied to "${targetPath}"`);
+    updateProjectName(targetPath, name);
+
+    if (args.values.git) {
+        existsSync('git init');
+    }
+
+    log.success(`✅ Template "${engine}" copied to "${targetPath}"`);
 }
 
 main();
