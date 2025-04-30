@@ -13,6 +13,7 @@ import {
 import { join, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 import { isCancel, select, text } from '@clack/prompts';
+import { kebabCase } from 'es-toolkit';
 
 const engines = ['deno', 'node', 'bun'] as const;
 type Engine = (typeof engines)[number];
@@ -73,7 +74,7 @@ async function ensureName(name?: string): Promise<string> {
 
     const enteredName = await text({
         message: 'Enter a project name:',
-        placeholder: 'my-project',
+        placeholder: 'my project',
     });
 
     if (!enteredName || typeof enteredName !== 'string') {
@@ -83,12 +84,15 @@ async function ensureName(name?: string): Promise<string> {
     return enteredName;
 }
 
-async function ensureTargetDir(target?: string): Promise<string> {
+async function ensureTargetDir(name: string, target?: string): Promise<string> {
     if (target) return target;
+
+    const defaultName = kebabCase(name);
 
     const response = await text({
         message: 'Where should the template be copied?',
-        placeholder: './my-project',
+        placeholder: defaultName,
+        defaultValue: defaultName
     });
 
     if (!response || isCancel(response)) {
@@ -185,7 +189,7 @@ async function handleSuccessfulCopy(path: string, name: string) {
 async function main() {
     const name = await ensureName(args.values.name);
     const engine = await ensureEngine(args.values.engine);
-    const targetDir = await ensureTargetDir(args.values.target);
+    const targetDir = await ensureTargetDir(name, args.values.target);
     const templatePath = resolve(import.meta.dirname, '../templates', engine);
     const targetPath = resolve(process.cwd(), targetDir);
 
