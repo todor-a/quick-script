@@ -11,7 +11,7 @@ import {
     writeFileSync,
 } from 'node:fs';
 import { join, resolve } from 'node:path';
-import { parseArgs } from 'node:util';
+import { parseArgs, styleText } from 'node:util';
 import { isCancel, select, text, log, tasks } from '@clack/prompts';
 import { kebabCase } from 'es-toolkit';
 import { execSync } from 'node:child_process';
@@ -228,7 +228,9 @@ async function main() {
         },
     ]);
 
-    log.success(`✅ Template "${engine}" copied to "${targetDir}"`);
+    log.success(
+        `✅ Template ${styleText('cyan', engine)} initialized in ${styleText('cyan', targetDir)}.`,
+    );
 }
 
 main();
