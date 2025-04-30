@@ -209,6 +209,7 @@ async function main() {
     updateProjectName(targetPath, name);
 
     if (args.values.git) {
+        execSync(`cd ${targetDir}`);
         execSync('git init');
     }
 
