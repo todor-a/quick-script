@@ -12,8 +12,9 @@ import {
 } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
-import { isCancel, select, text , log} from '@clack/prompts';
+import { isCancel, select, text, log } from '@clack/prompts';
 import { kebabCase } from 'es-toolkit';
+import { execSync } from 'node:child_process';
 
 const engines = ['deno', 'node', 'bun'] as const;
 type Engine = (typeof engines)[number];
@@ -91,7 +92,7 @@ async function ensureName(name?: string): Promise<string> {
 async function ensureTargetDir(name: string, target?: string): Promise<string> {
     if (target) return target;
 
-    const defaultName = kebabCase(name);
+    const defaultName = `./${kebabCase(name)}`;
 
     const response = await text({
         message: 'Where should the template be copied?',
@@ -208,7 +209,7 @@ async function main() {
     updateProjectName(targetPath, name);
 
     if (args.values.git) {
-        existsSync('git init');
+        execSync('git init');
     }
 
     log.success(`✅ Template "${engine}" copied to "${targetPath}"`);
