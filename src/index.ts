@@ -12,9 +12,10 @@ import {
 } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
-import { isCancel, select, text, log } from '@clack/prompts';
+import { isCancel, select, text, log, tasks } from '@clack/prompts';
 import { kebabCase } from 'es-toolkit';
 import { execSync } from 'node:child_process';
+import { chdir } from 'node:process';
 
 const engines = ['deno', 'node', 'bun'] as const;
 type Engine = (typeof engines)[number];
@@ -191,6 +192,17 @@ async function updateProjectName(path: string, name: string) {
     }
 }
 
+function initializeGit(path: string) {
+    const originalCwd = process.cwd();
+
+    try {
+        chdir(path);
+        execSync('git init');
+    } finally {
+        chdir(originalCwd);
+    }
+}
+
 async function main() {
     const name = await ensureName(args.values.name);
     const engine = await ensureEngine(args.values.engine);
@@ -208,12 +220,15 @@ async function main() {
     copyRecursive(templatePath, targetPath);
     updateProjectName(targetPath, name);
 
-    if (args.values.git) {
-        execSync(`cd ${targetDir}`);
-        execSync('git init');
-    }
+    await tasks([
+        {
+            enabled: args.values.git,
+            title: 'Initializing git repository',
+            task: async () => initializeGit(targetDir),
+        },
+    ]);
 
-    log.success(`✅ Template "${engine}" copied to "${targetPath}"`);
+    log.success(`✅ Template "${engine}" copied to "${targetDir}"`);
 }
 
 main();
